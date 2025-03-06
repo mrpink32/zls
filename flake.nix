@@ -1,9 +1,9 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-
-    zig-overlay.url = "github:mitchellh/zig-overlay";
-    zig-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgszig.url = "github:NixOS/nixpkgs/96c2125a8c56aad7a14b8d24e206fc0f61e2a520";
+    #zig-overlay.url = "github:mitchellh/zig-overlay";
+    #zig-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     gitignore.url = "github:hercules-ci/gitignore.nix";
     gitignore.inputs.nixpkgs.follows = "nixpkgs";
@@ -12,16 +12,15 @@
   outputs = {
     self,
     nixpkgs,
-    zig-overlay,
+    nixpkgszig,
     gitignore,
   }:
-    builtins.abort "This flake is currently broken because Zig 0.14.0 is temporarily unavailable in https://github.com/mitchellh/zig-overlay. Apologies for the disturbance, this will be addressed as soon as possible."
     builtins.foldl' nixpkgs.lib.recursiveUpdate {} (
       builtins.map
       (
         system: let
           pkgs = nixpkgs.legacyPackages.${system};
-          zig = zig-overlay.packages.${system}.master;
+          zig = nixpkgszig.packages.${system}.zig_0_14;
           gitignoreSource = gitignore.lib.gitignoreSource;
           target = builtins.replaceStrings ["darwin"] ["macos"] system;
           revision = self;
