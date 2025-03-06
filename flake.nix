@@ -20,7 +20,7 @@
       (
         system: let
           pkgs = nixpkgs.legacyPackages.${system};
-          zig = nixpkgszig.packages.${system}.zig_0_14;
+          zig = nixpkgszig.legacyPackages.${system}.zig_0_14;
           gitignoreSource = gitignore.lib.gitignoreSource;
           target = builtins.replaceStrings ["darwin"] ["macos"] system;
           revision = self;
